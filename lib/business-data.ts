@@ -1,0 +1,193 @@
+export interface ScheduleDay {
+  day: string;
+  opens: string;
+  closes: string;
+  closed?: boolean;
+}
+
+export const BUSINESS_DATA = {
+  name: "Le Temps d’une Gourmandise",
+  baseline: "Pause gourmande sucrée & salée à Fécamp",
+  tagline: "Prenez le temps d’une gourmandise.",
+  secondaryTagline: "Chaque heure a sa gourmandise.",
+  address: "4 place Saint-Étienne, Fécamp, France",
+  city: "Fécamp",
+  postalCode: "76400",
+  country: "France",
+  phone: "06 72 92 72 84",
+  phoneFormatted: "06 72 92 72 84",
+  phoneIntl: "+33672927284",
+  whatsappPhone: "33672927284",
+  email: "Letempsdunegourmandise76@laposte.net",
+  
+  googleRating: {
+    rating: 4.6,
+    count: 27,
+    date: "05/09/2026",
+  },
+  
+  facebookFollowers: 621,
+
+  scheduleEffectiveDate: "À partir du 31 août 2026",
+  schedule: [
+    { day: "Lundi", opens: "09:30", closes: "14:15" },
+    { day: "Mardi", opens: "09:30", closes: "14:15" },
+    { day: "Mercredi", opens: "09:30", closes: "17:15" },
+    { day: "Jeudi", opens: "09:30", closes: "14:15" },
+    { day: "Vendredi", opens: "09:30", closes: "14:15" },
+    { day: "Samedi", opens: "09:30", closes: "17:15" },
+    { day: "Dimanche", opens: "À confirmer", closes: "", note: "Non documenté — se renseigner en boutique" },
+  ],
+
+  exceptionalNotice: {
+    active: true,
+    title: "Offres de la rentrée & Horaires",
+    message: "Découvrez nos formules gourmandes à partir de 2€ ! Horaires adaptés pour vous accueillir le midi et pour le goûter du mercredi et samedi.",
+  },
+
+  quotes: [
+    {
+      id: "tripadvisor-1",
+      author: "Bugaginga",
+      location: "Tampa, Floride · 38 contributions",
+      date: "13 juillet 2026",
+      context: "En famille",
+      platform: "tripadvisor" as const,
+      rating: 5,
+      title: "Super endroit, friandises savoureuses et personnel agréable",
+      text: "J'ai séjourné à quelques pâtés de maisons de cette boulangerie. J'y suis allé un matin et la file d'attente sortait par la porte. Sans aucun doute un très bon signe ! J'ai pris un croissant et un pain au chocolat. Tous deux excellents. Je le recommanderais à quiconque souhaite des pâtisseries fraîches. Prix raisonnables aussi. Le personnel était très sympathique et serviable.",
+      source: "Avis vérifié TripAdvisor",
+      highlight: "File d'attente & viennoiseries d'exception",
+      verified: true,
+    },
+    {
+      id: "tripadvisor-2",
+      author: "Catherine B",
+      location: "Fécamp & environs · 3 contributions",
+      date: "24 janvier 2026",
+      context: "Solo",
+      platform: "tripadvisor" as const,
+      rating: 5,
+      title: "Une adresse qui redonne sens à la gourmandise",
+      text: "Un beau choix de pâtisseries, pains, sandwichs et viennoiseries. Mention spéciale pour leurs cakes faits-maison et des viennoiseries généreuses et goûteuses (croissants aux amandes et pains chocolat-amandes excellents). Bon rapport qualité/prix.",
+      source: "Avis vérifié TripAdvisor",
+      highlight: "Cakes maison & viennoiseries généreuses",
+      verified: true,
+    },
+    {
+      id: "facebook-1",
+      author: "Miguel Daussy",
+      location: "Fécamp, Normandie",
+      date: "16 janvier 2026",
+      context: "Pause gourmande",
+      platform: "facebook" as const,
+      rating: 5,
+      title: "Un vrai chocolat chaud et des gaufres impeccables",
+      text: "Personnel d’une extrême gentillesse. Le chocolat chaud est très bon, comparé à celui que j’ai pu boire sur la plage… On voit que c’est du vrai chocolat et pas simplement de l’eau avec un peu de poudre. Les gaufres et les plats salés sont également extrêmement bons. Ce n’est pas comme au McDo, où c’est beau en photo mais où en réalité ça n’a rien à voir : là, ce que j’ai eu dans l’assiette correspondait exactement à ce que j’avais vu !",
+      ownerResponse: "Merci beaucoup pour cet avis très positif, au plaisir de vous revoir ! — Céline Almon",
+      source: "Recommandation Facebook (622 abonnés)",
+      highlight: "Vrai chocolat fondu & assiettes copieuses",
+      verified: true,
+    },
+    {
+      id: "facebook-2",
+      author: "Yordaan Gbé",
+      location: "Normandie",
+      date: "21 février 2026",
+      context: "Sur place",
+      platform: "facebook" as const,
+      rating: 5,
+      title: "Accueil au top et régal garanti",
+      text: "Nous avons passé un excellent moment et nous nous sommes régalés ! L’accueil était vraiment au top. Je souhaite à Céline une belle réussite pour la suite. Merci beaucoup 🙂",
+      source: "Recommandation Facebook",
+      highlight: "Accueil chaleureux & moment convivial",
+      verified: true,
+    },
+    {
+      id: "facebook-3",
+      author: "Lolita Leclerc",
+      location: "Fécamp",
+      date: "2026",
+      context: "Visite régulière",
+      platform: "facebook" as const,
+      rating: 5,
+      title: "Très bon accueil & délicieux produits",
+      text: "Très bon accueil, délicieux produits, prix raisonnables... Je recommande vivement 👌🥰 Une adresse incontournable face à l'église Saint-Étienne.",
+      source: "Recommandation Facebook",
+      highlight: "Produits délicieux & prix doux",
+      verified: true,
+    },
+    {
+      id: "google-1",
+      author: "Laurine Legros",
+      location: "Guide local",
+      date: "2026",
+      context: "En famille",
+      platform: "google" as const,
+      rating: 5,
+      title: "Pause idéale pour petits et grands",
+      text: "Les douceurs sont délicieuses et très généreuses. Cadre parfait pour une pause goûter réconfortante après une promenade à Fécamp.",
+      source: "Avis vérifié Google",
+      highlight: "Pause idéale en famille",
+      verified: true,
+    },
+  ],
+
+  features: [
+    {
+      title: "Sur place & à emporter",
+      desc: "Installez-vous pour une pause conviviale ou emportez votre déjeuner et goûter.",
+    },
+    {
+      title: "Sucré & Salé",
+      desc: "Sandwichs chauds et froids, wraps, quiches, pâtisseries maison, gaufres et glaces.",
+    },
+    {
+      title: "Commande WhatsApp",
+      desc: "Préparez votre pause gourmande en ligne et transmettez votre demande en 1 clic.",
+    },
+    {
+      title: "Emplacement central",
+      desc: "Face à l'église Saint-Étienne, un écrin chaleureux au cœur de Fécamp.",
+    },
+  ],
+};
+
+export const TIME_BUCKETS = [
+  {
+    id: "morning",
+    label: "Le matin",
+    hours: "09:30 – 11:30",
+    headline: "Commencer doucement.",
+    desc: "Un café chaud, un vrai chocolat et une douceur pour démarrer la journée du bon pied.",
+    items: ["boissons-chaudes", "patisseries", "formule-cookie-rentree"],
+    badge: "Réveil doux",
+  },
+  {
+    id: "lunch",
+    label: "Le midi",
+    hours: "11:30 – 14:15",
+    headline: "Une pause salée qui fait du bien.",
+    desc: "Sandwich chaud ou froid croustillant, wraps frais et quiches pour une pause déjeuner généreuse.",
+    items: ["sandwich-chaud-froid", "wraps", "quiches-salades"],
+    badge: "Pause déjeuner",
+  },
+  {
+    id: "afternoon",
+    label: "Le goûter",
+    hours: "14:15 – 17:15",
+    headline: "C'est l'heure d'une vraie gourmandise.",
+    desc: "Gaufres chaudes parfumées, brownies fondants, brookies moelleux et chocolats chauds réconfortants.",
+    items: ["gaufres", "brookie", "brownie", "patisseries"],
+    badge: "L'heure du goûter",
+  },
+  {
+    id: "fresh",
+    label: "La pause fraîche",
+    hours: "Toute la journée",
+    headline: "Une envie de fraîcheur ?",
+    desc: "Smoothies fruités mixés minute, glaces onctueuses et canettes rafraîchissantes.",
+    items: ["smoothies", "glaces", "formule-donut-rentree"],
+    badge: "Plaisir frais",
+  },
+];

@@ -1,0 +1,6 @@
+{
+  "name": "Le Temps d’une Gourmandise",
+  "description": "Pause gourmande sucrée et salée à Fécamp : sandwichs, gaufres, brownies, brookies, glaces, smoothies et boissons au 4 place Saint-Étienne.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
