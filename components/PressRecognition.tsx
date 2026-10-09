@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { motion } from 'motion/react';
 import { Award, ExternalLink, Star, Newspaper } from 'lucide-react';
 
 interface PressLogo {
@@ -63,12 +64,26 @@ export function PressRecognition() {
   return (
     <section className="py-14 sm:py-20 relative overflow-hidden bg-gradient-to-b from-[#faf6f4] via-[#fdf2f4]/60 to-[#faf6f4] border-y border-[#8d7078]/15">
       {/* Decorative ambient liquid glows */}
-      <div className="absolute top-1/2 -left-24 -translate-y-1/2 w-80 h-80 bg-[#8d7078]/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 -right-24 -translate-y-1/2 w-80 h-80 bg-[#9b4f67]/10 rounded-full blur-3xl pointer-events-none" />
+      <motion.div
+        animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.2, 0.1] }}
+        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-1/2 -left-24 -translate-y-1/2 w-80 h-80 bg-[#8d7078]/10 rounded-full blur-3xl pointer-events-none"
+      />
+      <motion.div
+        animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
+        transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+        className="absolute top-1/2 -right-24 -translate-y-1/2 w-80 h-80 bg-[#9b4f67]/10 rounded-full blur-3xl pointer-events-none"
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative space-y-10">
         {/* Editorial Header */}
-        <div className="text-center max-w-2xl mx-auto space-y-3">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center max-w-2xl mx-auto space-y-3"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full liquid-glass text-[#8d7078] text-xs font-semibold tracking-wide">
             <Award className="w-3.5 h-3.5 text-[#9b4f67]" />
             <span>Presse & Reconnaissance Locale</span>
@@ -79,10 +94,16 @@ export function PressRecognition() {
           <p className="text-xs sm:text-sm text-[#543734] leading-relaxed">
             De l’article élogieux dans <strong>Paris-Normandie</strong> aux avis enthousiastes sur TripAdvisor, Restaurant Guru et Facebook : découvrez ce que les médias et nos clients disent de nous.
           </p>
-        </div>
+        </motion.div>
 
         {/* Featured Paris Normandie Spotlight Card */}
-        <div className="liquid-glass rounded-3xl p-6 sm:p-8 border border-white/80 shadow-lg relative overflow-hidden grid md:grid-cols-12 gap-6 items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          className="liquid-glass rounded-3xl p-6 sm:p-8 border border-white/80 shadow-lg relative overflow-hidden grid md:grid-cols-12 gap-6 items-center"
+        >
           <div className="md:col-span-5 relative h-52 sm:h-64 rounded-2xl overflow-hidden shadow-md group">
             <Image
               src="/images/paris-normandie-article.jpg"
@@ -119,7 +140,9 @@ export function PressRecognition() {
             </p>
 
             <div className="pt-2 flex flex-wrap items-center gap-3">
-              <a
+              <motion.a
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
                 href="https://www.paris-normandie.fr/id685270/article/2025-12-27/celine-almon-ouvre-le-temps-dune-gourmandise-fecamp-la-restauration-rapide-au"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -127,18 +150,22 @@ export function PressRecognition() {
               >
                 <span>Lire l’article complet</span>
                 <ExternalLink className="w-3.5 h-3.5" />
-              </a>
+              </motion.a>
               <span className="text-[11px] text-[#8d7078] font-medium">
                 Formules salées & sucrées dès 2,00 €
               </span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Logos & Platform Endorsement Grid */}
+        {/* Logos & Platform Endorsement Grid with Motion Hover */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {/* Logo 1: Paris Normandie */}
-          <div className="liquid-glass-card rounded-2xl p-5 border border-white/90 flex flex-col justify-between space-y-3 hover:-translate-y-1 transition-all duration-300">
+          <motion.div
+            whileHover={{ y: -5, scale: 1.02 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+            className="liquid-glass-card rounded-2xl p-5 border border-white/90 flex flex-col justify-between space-y-3 cursor-default"
+          >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-[#2c1a19] text-[#f6d8df] flex items-center justify-center font-serif font-black text-sm">
@@ -155,10 +182,14 @@ export function PressRecognition() {
             <div className="text-[10px] uppercase font-bold text-[#9b4f67] tracking-wider pt-1 border-t border-[#8d7078]/10">
               Presse Régionale
             </div>
-          </div>
+          </motion.div>
 
           {/* Logo 2: TripAdvisor */}
-          <div className="liquid-glass-card rounded-2xl p-5 border border-white/90 flex flex-col justify-between space-y-3 hover:-translate-y-1 transition-all duration-300">
+          <motion.div
+            whileHover={{ y: -5, scale: 1.02 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+            className="liquid-glass-card rounded-2xl p-5 border border-white/90 flex flex-col justify-between space-y-3 cursor-default"
+          >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-[#34e0a1]/20 text-[#00aa6c] flex items-center justify-center font-bold text-sm">
@@ -181,10 +212,14 @@ export function PressRecognition() {
             <div className="text-[10px] uppercase font-bold text-[#00aa6c] tracking-wider pt-1 border-t border-[#8d7078]/10">
               Avis Voyageurs
             </div>
-          </div>
+          </motion.div>
 
           {/* Logo 3: Restaurant Guru */}
-          <div className="liquid-glass-card rounded-2xl p-5 border border-white/90 flex flex-col justify-between space-y-3 hover:-translate-y-1 transition-all duration-300">
+          <motion.div
+            whileHover={{ y: -5, scale: 1.02 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+            className="liquid-glass-card rounded-2xl p-5 border border-white/90 flex flex-col justify-between space-y-3 cursor-default"
+          >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-[#ef4444]/15 text-[#ef4444] flex items-center justify-center font-black text-sm">
@@ -207,10 +242,14 @@ export function PressRecognition() {
             <div className="text-[10px] uppercase font-bold text-[#ef4444] tracking-wider pt-1 border-t border-[#8d7078]/10">
               Recommandé 2026
             </div>
-          </div>
+          </motion.div>
 
           {/* Logo 4: Facebook Communauté */}
-          <div className="liquid-glass-card rounded-2xl p-5 border border-white/90 flex flex-col justify-between space-y-3 hover:-translate-y-1 transition-all duration-300">
+          <motion.div
+            whileHover={{ y: -5, scale: 1.02 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+            className="liquid-glass-card rounded-2xl p-5 border border-white/90 flex flex-col justify-between space-y-3 cursor-default"
+          >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-[#1877f2]/15 text-[#1877f2] flex items-center justify-center font-bold text-sm">
@@ -230,9 +269,10 @@ export function PressRecognition() {
             <div className="text-[10px] uppercase font-bold text-[#1877f2] tracking-wider pt-1 border-t border-[#8d7078]/10">
               Page Officielle
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
   );
 }
+

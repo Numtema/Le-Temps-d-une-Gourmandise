@@ -132,7 +132,7 @@ export function FramerTestimonials() {
           </div>
         </div>
 
-        {/* Interactive Platform Filter Buttons (Framer style tabs) */}
+        {/* Interactive Platform Filter Buttons (Framer style tabs with layoutId) */}
         <div className="flex flex-wrap items-center justify-start sm:justify-center gap-2 pt-2">
           {[
             { id: 'all', label: 'Tous les avis', count: quotes.length },
@@ -142,16 +142,25 @@ export function FramerTestimonials() {
           ].map((tab) => {
             const isSelected = filter === tab.id;
             return (
-              <button
+              <motion.button
                 key={tab.id}
                 type="button"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => setFilter(tab.id as PlatformFilter)}
-                className={`relative px-4 py-2 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 ${
+                className={`relative px-4 py-2 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 z-10 ${
                   isSelected
-                    ? 'bg-[#9b4f67] text-white shadow-sm'
+                    ? 'text-white shadow-sm'
                     : 'liquid-glass text-[#543734] hover:bg-white border border-white/80'
                 }`}
               >
+                {isSelected && (
+                  <motion.div
+                    layoutId="activeTestimonialTab"
+                    className="absolute inset-0 bg-[#9b4f67] rounded-full -z-10 shadow-xs"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                  />
+                )}
                 <span>{tab.label}</span>
                 <span
                   className={`text-[10px] px-1.5 py-0.5 rounded-full ${
@@ -160,22 +169,23 @@ export function FramerTestimonials() {
                 >
                   {tab.count}
                 </span>
-              </button>
+              </motion.button>
             );
           })}
         </div>
 
         {/* Animated Grid Cards */}
         <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AnimatePresence>
+          <AnimatePresence mode="popLayout">
             {filteredQuotes.map((item) => (
               <motion.div
                 key={item.id}
                 layout
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                initial={{ opacity: 0, scale: 0.92, y: 25 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                transition={{ duration: 0.35, ease: 'easeOut' }}
+                exit={{ opacity: 0, scale: 0.92, y: -20 }}
+                whileHover={{ y: -5, scale: 1.01 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 onClick={() => setActiveReviewId(activeReviewId === item.id ? null : item.id)}
                 className={`group liquid-glass-card rounded-3xl p-6 border transition-all duration-300 flex flex-col justify-between cursor-pointer relative overflow-hidden ${
                   activeReviewId === item.id
@@ -193,9 +203,12 @@ export function FramerTestimonials() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
                       {/* Avatar */}
-                      <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#8d7078] to-[#9b4f67] text-white flex items-center justify-center font-serif-gourmand font-bold text-base shadow-sm ring-2 ring-white">
+                      <motion.div
+                        whileHover={{ rotate: 10 }}
+                        className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#8d7078] to-[#9b4f67] text-white flex items-center justify-center font-serif-gourmand font-bold text-base shadow-sm ring-2 ring-white"
+                      >
                         {item.author.charAt(0)}
-                      </div>
+                      </motion.div>
                       <div>
                         <div className="flex items-center gap-1.5">
                           <h3 className="font-serif-gourmand font-bold text-base text-[#2c1a19]">
@@ -254,7 +267,11 @@ export function FramerTestimonials() {
 
                   {/* Official Owner Response (Céline) if available */}
                   {item.ownerResponse && (
-                    <div className="mt-3 p-3.5 rounded-2xl bg-[#faf6f4] border border-[#8d7078]/20 space-y-1.5 text-xs">
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="mt-3 p-3.5 rounded-2xl bg-[#faf6f4] border border-[#8d7078]/20 space-y-1.5 text-xs"
+                    >
                       <div className="flex items-center gap-2">
                         <div className="w-5 h-5 rounded-full bg-[#9b4f67] text-white flex items-center justify-center text-[9px] font-bold">
                           LG
@@ -266,20 +283,21 @@ export function FramerTestimonials() {
                       <p className="text-[11px] text-[#543734] italic pl-7">
                         « {item.ownerResponse} »
                       </p>
-                    </div>
+                    </motion.div>
                   )}
                 </div>
 
                 {/* Footer Action of Card */}
                 <div className="mt-4 pt-3.5 border-t border-[#8d7078]/15 flex items-center justify-between text-xs">
-                  <button
+                  <motion.button
+                    whileTap={{ scale: 0.9 }}
                     type="button"
                     onClick={(e) => handleLike(item.id, e)}
-                    className="flex items-center gap-1.5 text-[#8d7078] hover:text-[#9b4f67] font-medium transition-colors bg-white/60 px-2.5 py-1 rounded-full border border-white/80"
+                    className="flex items-center gap-1.5 text-[#8d7078] hover:text-[#9b4f67] font-medium transition-colors bg-white/60 hover:bg-white px-2.5 py-1 rounded-full border border-white/80"
                   >
                     <ThumbsUp className="w-3.5 h-3.5" />
                     <span>Utile ({likedReviews[item.id] || 10})</span>
-                  </button>
+                  </motion.button>
 
                   <span className="text-[11px] text-[#8d7078]/80 font-medium">
                     {item.source}

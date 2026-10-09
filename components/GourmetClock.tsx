@@ -3,6 +3,7 @@
 import React, { useState, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'motion/react';
 import { Clock, Sparkles, ArrowRight, Coffee, Sandwich, IceCream } from 'lucide-react';
 import { TIME_BUCKETS } from '@/lib/business-data';
 import { CATALOG } from '@/lib/catalog';
@@ -64,13 +65,27 @@ export function GourmetClock() {
 
   return (
     <section className="relative py-16 sm:py-24 bg-gradient-to-b from-[#faf6f4] via-[#fffdfc] to-[#faf6f4] border-y border-[#8d7078]/15 overflow-hidden">
-      {/* Background soft ambiance */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#f6d8df]/35 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#8d7078]/10 rounded-full blur-3xl pointer-events-none" />
+      {/* Background soft ambiance with motion */}
+      <motion.div
+        animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.45, 0.3] }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-0 right-0 w-96 h-96 bg-[#f6d8df]/35 rounded-full blur-3xl pointer-events-none"
+      />
+      <motion.div
+        animate={{ scale: [1, 1.12, 1], opacity: [0.15, 0.25, 0.15] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+        className="absolute bottom-0 left-0 w-96 h-96 bg-[#8d7078]/15 rounded-full blur-3xl pointer-events-none"
+      />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto space-y-3">
+        {/* Section Header with Viewport Animation */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center max-w-2xl mx-auto space-y-3"
+        >
           <div className="inline-flex items-center gap-2 liquid-glass text-[#8d7078] px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider shadow-xs">
             <Clock className="w-3.5 h-3.5 text-[#9b4f67]" />
             <span>L’Horloge Gourmande</span>
@@ -88,23 +103,32 @@ export function GourmetClock() {
           <div className="pt-1">
             <GourmetRibbon variant="line" color="#c26982" className="w-32 mx-auto" />
           </div>
-        </div>
+        </motion.div>
 
-        {/* Time Bucket Navigation Tabs */}
+        {/* Time Bucket Navigation Tabs with Animated Layout Pill */}
         <div className="mt-10 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
           {TIME_BUCKETS.map((bucket) => {
             const isSelected = activeBucketId === bucket.id;
             return (
-              <button
+              <motion.button
                 key={bucket.id}
                 type="button"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => setManualBucketId(bucket.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all ${
+                className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all z-10 ${
                   isSelected
-                    ? 'bg-[#9b4f67] text-white shadow-md scale-102'
+                    ? 'text-white shadow-md'
                     : 'liquid-glass text-[#543734] hover:bg-[#fdf2f4] border border-white/80'
                 }`}
               >
+                {isSelected && (
+                  <motion.div
+                    layoutId="activeClockTab"
+                    className="absolute inset-0 bg-[#9b4f67] rounded-full -z-10 shadow-sm"
+                    transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                  />
+                )}
                 {getBucketIcon(bucket.id)}
                 <span>{bucket.label}</span>
                 <span
@@ -114,101 +138,124 @@ export function GourmetClock() {
                 >
                   {bucket.hours}
                 </span>
-              </button>
+              </motion.button>
             );
           })}
         </div>
 
         {/* Active Bucket Editorial Banner */}
-        <div className="mt-8 liquid-glass p-6 sm:p-8 rounded-3xl border border-white/90 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-2 text-center md:text-left">
-            <span className="inline-block text-xs font-bold uppercase tracking-wider text-[#9b4f67]">
-              {activeBucket.badge}
-            </span>
-            <h3 className="font-serif-gourmand font-bold text-2xl sm:text-3xl text-[#2c1a19]">
-              {activeBucket.headline}
-            </h3>
-            <p className="text-xs sm:text-sm text-[#543734] max-w-xl">
-              {activeBucket.desc}
-            </p>
-          </div>
-
-          <Link
-            href="/la-carte"
-            className="shrink-0 inline-flex items-center gap-2 bg-[#9b4f67] text-white hover:bg-[#813d52] px-5 py-3 rounded-full text-xs sm:text-sm font-semibold shadow-sm transition-colors"
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeBucket.id}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.35 }}
+            className="mt-8 liquid-glass p-6 sm:p-8 rounded-3xl border border-white/90 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6"
           >
-            <span>Toute la carte</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
+            <div className="space-y-2 text-center md:text-left">
+              <span className="inline-block text-xs font-bold uppercase tracking-wider text-[#9b4f67]">
+                {activeBucket.badge}
+              </span>
+              <h3 className="font-serif-gourmand font-bold text-2xl sm:text-3xl text-[#2c1a19]">
+                {activeBucket.headline}
+              </h3>
+              <p className="text-xs sm:text-sm text-[#543734] max-w-xl">
+                {activeBucket.desc}
+              </p>
+            </div>
+
+            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+              <Link
+                href="/la-carte"
+                className="shrink-0 inline-flex items-center gap-2 bg-[#9b4f67] text-white hover:bg-[#813d52] px-5 py-3 rounded-full text-xs sm:text-sm font-semibold shadow-sm transition-colors"
+              >
+                <span>Toute la carte</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
 
         {/* Suggested Product Cards Grid */}
-        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {suggestedProducts.map((item) => (
-            <div
-              key={item.id}
-              className="group liquid-glass-card rounded-3xl overflow-hidden border border-white/80 hover:border-[#9b4f67]/40 hover:shadow-xl transition-all duration-300 flex flex-col"
-            >
-              {/* Product Thumbnail */}
-              <div className="relative h-48 sm:h-52 bg-[#f6d8df] overflow-hidden">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-                <div className="absolute top-3 left-3 flex flex-wrap gap-1">
-                  {item.badges.map((b) => (
-                    <span
-                      key={b}
-                      className="bg-[#9b4f67] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs"
-                    >
-                      {b}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Card Body */}
-              <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                <div className="space-y-1.5">
-                  <div className="flex items-baseline justify-between gap-2">
-                    <h4 className="font-serif-gourmand font-bold text-lg text-[#2c1a19] group-hover:text-[#9b4f67] transition-colors">
-                      {item.name}
-                    </h4>
-                    <span className="font-serif-gourmand font-bold text-base text-[#9b4f67] shrink-0">
-                      {item.priceFormatted || `${item.price?.toFixed(2).replace('.', ',')} €`}
-                    </span>
+        <motion.div layout className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <AnimatePresence mode="popLayout">
+            {suggestedProducts.map((item) => (
+              <motion.div
+                key={item.id}
+                layout
+                initial={{ opacity: 0, scale: 0.94 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.94 }}
+                whileHover={{ y: -6, scale: 1.015 }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                className="group liquid-glass-card rounded-3xl overflow-hidden border border-white/80 hover:border-[#9b4f67]/40 hover:shadow-xl transition-all duration-300 flex flex-col"
+              >
+                {/* Product Thumbnail */}
+                <div className="relative h-48 sm:h-52 bg-[#f6d8df] overflow-hidden">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    className="object-cover group-hover:scale-108 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                  <div className="absolute top-3 left-3 flex flex-wrap gap-1">
+                    {item.badges.map((b) => (
+                      <span
+                        key={b}
+                        className="bg-[#9b4f67] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs"
+                      >
+                        {b}
+                      </span>
+                    ))}
                   </div>
-                  <p className="text-xs text-[#543734] line-clamp-2 leading-relaxed">
-                    {item.shortDescription}
-                  </p>
                 </div>
 
-                <div className="flex items-center gap-2 pt-2 border-t border-[#8d7078]/15">
-                  <button
-                    type="button"
-                    onClick={() => setQuickViewItem(item)}
-                    className="flex-1 py-2.5 px-3 rounded-xl liquid-glass hover:bg-white text-xs font-semibold text-[#2c1a19] border border-white/80 transition-colors shadow-2xs"
-                  >
-                    Détails & Choix
-                  </button>
+                {/* Card Body */}
+                <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                  <div className="space-y-1.5">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <h4 className="font-serif-gourmand font-bold text-lg text-[#2c1a19] group-hover:text-[#9b4f67] transition-colors">
+                        {item.name}
+                      </h4>
+                      <span className="font-serif-gourmand font-bold text-base text-[#9b4f67] shrink-0">
+                        {item.priceFormatted || `${item.price?.toFixed(2).replace('.', ',')} €`}
+                      </span>
+                    </div>
+                    <p className="text-xs text-[#543734] line-clamp-2 leading-relaxed">
+                      {item.shortDescription}
+                    </p>
+                  </div>
 
-                  <button
-                    type="button"
-                    onClick={() => addItem(item, 1)}
-                    className="py-2.5 px-4 rounded-xl bg-[#9b4f67] hover:bg-[#813d52] text-xs font-semibold text-white shadow-xs transition-colors"
-                    aria-label={`Ajouter ${item.name}`}
-                  >
-                    Ajouter
-                  </button>
+                  <div className="flex items-center gap-2 pt-2 border-t border-[#8d7078]/15">
+                    <motion.button
+                      whileTap={{ scale: 0.96 }}
+                      type="button"
+                      onClick={() => setQuickViewItem(item)}
+                      className="flex-1 py-2.5 px-3 rounded-xl liquid-glass hover:bg-white text-xs font-semibold text-[#2c1a19] border border-white/80 transition-colors shadow-2xs"
+                    >
+                      Détails & Choix
+                    </motion.button>
+
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      type="button"
+                      onClick={() => addItem(item, 1)}
+                      className="py-2.5 px-4 rounded-xl bg-[#9b4f67] hover:bg-[#813d52] text-xs font-semibold text-white shadow-xs transition-colors"
+                      aria-label={`Ajouter ${item.name}`}
+                    >
+                      Ajouter
+                    </motion.button>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   );
 }
+
